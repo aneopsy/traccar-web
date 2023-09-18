@@ -14,7 +14,19 @@ import BatteryChargingFullIcon from "@mui/icons-material/BatteryChargingFull";
 import Battery60Icon from "@mui/icons-material/Battery60";
 import BatteryCharging60Icon from "@mui/icons-material/BatteryCharging60";
 import Battery20Icon from "@mui/icons-material/Battery20";
+import BatteryCharging30Icon from "@mui/icons-material/BatteryCharging60";
+import Battery30Icon from "@mui/icons-material/Battery20";
 import BatteryCharging20Icon from "@mui/icons-material/BatteryCharging20";
+
+import SignalCellularConnectedNoInternet0BarIcon from "@mui/icons-material/SignalCellularConnectedNoInternet0Bar";
+import SignalCellular4BarIcon from "@mui/icons-material/SignalCellular4Bar";
+import SignalCellular3BarIcon from "@mui/icons-material/SignalCellular3Bar";
+import SignalCellular2BarIcon from "@mui/icons-material/SignalCellular2Bar";
+import SignalCellular1BarIcon from "@mui/icons-material/SignalCellular1Bar";
+
+import GpsNotFixedIcon from "@mui/icons-material/GpsNotFixed";
+import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+
 import ErrorIcon from "@mui/icons-material/Error";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -68,7 +80,6 @@ const DeviceRow = ({ data, index, style }) => {
 
   const item = data[index];
   const position = useSelector((state) => state.session.positions[item.id]);
-
   const devicePrimary = useAttributePreference("devicePrimary", "name");
   const deviceSecondary = useAttributePreference("deviceSecondary", "");
 
@@ -149,6 +160,58 @@ const DeviceRow = ({ data, index, style }) => {
                 </IconButton>
               </Tooltip>
             )}
+            {
+              <Tooltip title={`GPS: ${position.valid}`}>
+                <IconButton size="small">
+                  {position.valid ? (
+                    <GpsFixedIcon
+                      fontSize="small"
+                      className={classes.success}
+                    />
+                  ) : (
+                    <GpsNotFixedIcon
+                      fontSize="small"
+                      className={classes.warning}
+                    />
+                  )}
+                </IconButton>
+              </Tooltip>
+            }
+            {position.network.hasOwnProperty("cellTowers") &&
+              position.network.cellTowers.length > 0 && (
+                <Tooltip
+                  title={`GSM: ${position.network.cellTowers[0].signalStrength}`}
+                >
+                  <IconButton size="small">
+                    {position.network.cellTowers[0].signalStrength > 25 ? (
+                      <SignalCellular4BarIcon
+                        fontSize="small"
+                        className={classes.success}
+                      />
+                    ) : position.network.cellTowers[0].signalStrength > 20 ? (
+                      <SignalCellular3BarIcon
+                        fontSize="small"
+                        className={classes.success}
+                      />
+                    ) : position.network.cellTowers[0].signalStrength > 15 ? (
+                      <SignalCellular2BarIcon
+                        fontSize="small"
+                        className={classes.warning}
+                      />
+                    ) : position.network.cellTowers[0].signalStrength > 10 ? (
+                      <SignalCellular1BarIcon
+                        fontSize="small"
+                        className={classes.warning}
+                      />
+                    ) : (
+                      <SignalCellularConnectedNoInternet0BarIcon
+                        fontSize="small"
+                        className={classes.error}
+                      />
+                    )}
+                  </IconButton>
+                </Tooltip>
+              )}
             {position.attributes.hasOwnProperty("batteryLevel") && (
               <Tooltip
                 title={`${t("positionBatteryLevel")}: ${formatPercentage(
@@ -176,6 +239,60 @@ const DeviceRow = ({ data, index, style }) => {
                       />
                     ) : (
                       <Battery60Icon
+                        fontSize="small"
+                        className={classes.warning}
+                      />
+                    )
+                  ) : position.attributes.charge ? (
+                    <BatteryCharging20Icon
+                      fontSize="small"
+                      className={classes.error}
+                    />
+                  ) : (
+                    <Battery20Icon fontSize="small" className={classes.error} />
+                  )}
+                </IconButton>
+              </Tooltip>
+            )}
+            {position.attributes.hasOwnProperty("battery") && (
+              <Tooltip
+                title={`${t(
+                  "positionBatteryLevel"
+                )}: ${position.attributes.battery.toFixed(2)}V`}
+              >
+                <IconButton size="small">
+                  {position.attributes.battery > 4.1 ? (
+                    position.attributes.charge ? (
+                      <BatteryChargingFullIcon
+                        fontSize="small"
+                        className={classes.success}
+                      />
+                    ) : (
+                      <BatteryFullIcon
+                        fontSize="small"
+                        className={classes.success}
+                      />
+                    )
+                  ) : position.attributes.battery > 3.7 ? (
+                    position.attributes.charge ? (
+                      <BatteryCharging60Icon
+                        fontSize="small"
+                        className={classes.success}
+                      />
+                    ) : (
+                      <Battery60Icon
+                        fontSize="small"
+                        className={classes.success}
+                      />
+                    )
+                  ) : position.attributes.battery > 3.4 ? (
+                    position.attributes.charge ? (
+                      <BatteryCharging30Icon
+                        fontSize="small"
+                        className={classes.warning}
+                      />
+                    ) : (
+                      <Battery30Icon
                         fontSize="small"
                         className={classes.warning}
                       />
