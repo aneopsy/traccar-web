@@ -10,12 +10,12 @@ export default defineConfig(() => ({
     host: "0.0.0.0",
     proxy: {
       "/api/socket": {
-        target: "ws://45.32.83.203:8080",
+        target: "ws://localhost:8080",
         changeOrigin: true,
         secure: false,
       },
       "/api": {
-        target: "http://45.32.83.203:8080",
+        target: "http://localhost:8080",
         changeOrigin: true,
         secure: false,
       },
