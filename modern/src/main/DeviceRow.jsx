@@ -160,24 +160,33 @@ const DeviceRow = ({ data, index, style }) => {
                 </IconButton>
               </Tooltip>
             )}
-            {
+            {position.hasOwnProperty("valid") && (
               <Tooltip title={`GPS: ${position.valid}`}>
                 <IconButton size="small">
                   {position.valid ? (
                     <GpsFixedIcon
                       fontSize="small"
-                      className={classes.success}
+                      className={
+                        item.status === "online"
+                          ? classes.success
+                          : classes.neutral
+                      }
                     />
                   ) : (
                     <GpsNotFixedIcon
                       fontSize="small"
-                      className={classes.warning}
+                      className={
+                        item.status === "online"
+                          ? classes.error
+                          : classes.neutral
+                      }
                     />
                   )}
                 </IconButton>
               </Tooltip>
-            }
-            {position.network.hasOwnProperty("cellTowers") &&
+            )}
+            {position.hasOwnProperty("network") &&
+              position.network.hasOwnProperty("cellTowers") &&
               position.network.cellTowers.length > 0 && (
                 <Tooltip
                   title={`GSM: ${position.network.cellTowers[0].signalStrength}`}
@@ -186,27 +195,47 @@ const DeviceRow = ({ data, index, style }) => {
                     {position.network.cellTowers[0].signalStrength > 25 ? (
                       <SignalCellular4BarIcon
                         fontSize="small"
-                        className={classes.success}
+                        className={
+                          item.status === "online"
+                            ? classes.success
+                            : classes.neutral
+                        }
                       />
                     ) : position.network.cellTowers[0].signalStrength > 20 ? (
                       <SignalCellular3BarIcon
                         fontSize="small"
-                        className={classes.success}
+                        className={
+                          item.status === "online"
+                            ? classes.success
+                            : classes.neutral
+                        }
                       />
                     ) : position.network.cellTowers[0].signalStrength > 15 ? (
                       <SignalCellular2BarIcon
                         fontSize="small"
-                        className={classes.warning}
+                        className={
+                          item.status === "online"
+                            ? classes.warning
+                            : classes.neutral
+                        }
                       />
                     ) : position.network.cellTowers[0].signalStrength > 10 ? (
                       <SignalCellular1BarIcon
                         fontSize="small"
-                        className={classes.warning}
+                        className={
+                          item.status === "online"
+                            ? classes.warning
+                            : classes.neutral
+                        }
                       />
                     ) : (
                       <SignalCellularConnectedNoInternet0BarIcon
                         fontSize="small"
-                        className={classes.error}
+                        className={
+                          item.status === "online"
+                            ? classes.error
+                            : classes.neutral
+                        }
                       />
                     )}
                   </IconButton>
@@ -223,33 +252,60 @@ const DeviceRow = ({ data, index, style }) => {
                     position.attributes.charge ? (
                       <BatteryChargingFullIcon
                         fontSize="small"
-                        className={classes.success}
+                        className={
+                          item.status === "online"
+                            ? classes.success
+                            : classes.neutral
+                        }
                       />
                     ) : (
                       <BatteryFullIcon
                         fontSize="small"
-                        className={classes.success}
+                        className={
+                          item.status === "online"
+                            ? classes.success
+                            : classes.neutral
+                        }
                       />
                     )
                   ) : position.attributes.batteryLevel > 30 ? (
                     position.attributes.charge ? (
                       <BatteryCharging60Icon
                         fontSize="small"
-                        className={classes.warning}
+                        className={
+                          item.status === "online"
+                            ? classes.warning
+                            : classes.neutral
+                        }
                       />
                     ) : (
                       <Battery60Icon
                         fontSize="small"
-                        className={classes.warning}
+                        className={
+                          item.status === "online"
+                            ? classes.warning
+                            : classes.neutral
+                        }
                       />
                     )
                   ) : position.attributes.charge ? (
                     <BatteryCharging20Icon
                       fontSize="small"
-                      className={classes.error}
+                      className={
+                        item.status === "online"
+                          ? classes.error
+                          : classes.neutral
+                      }
                     />
                   ) : (
-                    <Battery20Icon fontSize="small" className={classes.error} />
+                    <Battery20Icon
+                      fontSize="small"
+                      className={
+                        item.status === "online"
+                          ? classes.error
+                          : classes.neutral
+                      }
+                    />
                   )}
                 </IconButton>
               </Tooltip>
@@ -265,42 +321,70 @@ const DeviceRow = ({ data, index, style }) => {
                     position.attributes.charge ? (
                       <BatteryChargingFullIcon
                         fontSize="small"
-                        className={classes.success}
+                        className={
+                          item.status === "online"
+                            ? classes.success
+                            : classes.neutral
+                        }
                       />
                     ) : (
                       <BatteryFullIcon
                         fontSize="small"
-                        className={classes.success}
+                        className={
+                          item.status === "online"
+                            ? classes.success
+                            : classes.neutral
+                        }
                       />
                     )
                   ) : position.attributes.battery > 3.7 ? (
                     position.attributes.charge ? (
                       <BatteryCharging60Icon
                         fontSize="small"
-                        className={classes.success}
+                        className={
+                          item.status === "online"
+                            ? classes.success
+                            : classes.neutral
+                        }
                       />
                     ) : (
                       <Battery60Icon
                         fontSize="small"
-                        className={classes.success}
+                        className={
+                          item.status === "online"
+                            ? classes.success
+                            : classes.neutral
+                        }
                       />
                     )
                   ) : position.attributes.battery > 3.4 ? (
                     position.attributes.charge ? (
                       <BatteryCharging30Icon
                         fontSize="small"
-                        className={classes.warning}
+                        className={
+                          item.status === "online"
+                            ? classes.warning
+                            : classes.neutral
+                        }
                       />
                     ) : (
                       <Battery30Icon
                         fontSize="small"
-                        className={classes.warning}
+                        className={
+                          item.status === "online"
+                            ? classes.warning
+                            : classes.neutral
+                        }
                       />
                     )
                   ) : position.attributes.charge ? (
                     <BatteryCharging20Icon
                       fontSize="small"
-                      className={classes.error}
+                      className={
+                        item.status === "online"
+                          ? classes.error
+                          : classes.neutral
+                      }
                     />
                   ) : (
                     <Battery20Icon fontSize="small" className={classes.error} />
