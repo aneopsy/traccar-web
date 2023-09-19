@@ -124,7 +124,7 @@ const DeviceRow = ({ data, index, style }) => {
         />
         {position && (
           <>
-            {position.attributes.hasOwnProperty("alarm") && (
+            {position.attributes?.alarm && (
               <Tooltip
                 title={`${t("eventAlarm")}: ${formatAlarm(
                   position.attributes.alarm,
@@ -136,7 +136,7 @@ const DeviceRow = ({ data, index, style }) => {
                 </IconButton>
               </Tooltip>
             )}
-            {position.attributes.hasOwnProperty("ignition") && (
+            {position.attributes?.ignition && (
               <Tooltip
                 title={`${t("positionIgnition")}: ${formatBoolean(
                   position.attributes.ignition,
@@ -160,14 +160,14 @@ const DeviceRow = ({ data, index, style }) => {
                 </IconButton>
               </Tooltip>
             )}
-            {position.hasOwnProperty("valid") && (
-              <Tooltip title={`GPS: ${position.valid}`}>
+            {position?.valid && (
+              <Tooltip title={`GPS: ${position?.valid}`}>
                 <IconButton size="small">
-                  {position.valid ? (
+                  {position?.valid ? (
                     <GpsFixedIcon
                       fontSize="small"
                       className={
-                        item.status === "online"
+                        item?.status === "online"
                           ? classes.success
                           : classes.neutral
                       }
@@ -176,7 +176,7 @@ const DeviceRow = ({ data, index, style }) => {
                     <GpsNotFixedIcon
                       fontSize="small"
                       className={
-                        item.status === "online"
+                        item?.status === "online"
                           ? classes.error
                           : classes.neutral
                       }
@@ -185,9 +185,10 @@ const DeviceRow = ({ data, index, style }) => {
                 </IconButton>
               </Tooltip>
             )}
-            {position.hasOwnProperty("network") &&
-              position.network.hasOwnProperty("cellTowers") &&
-              position.network.cellTowers.length > 0 && (
+            {position?.network?.cellTowers.length > 0 &&
+              position?.network?.cellTowers[0].hasOwnProperty(
+                "signalStrength"
+              ) && (
                 <Tooltip
                   title={`GSM: ${position.network.cellTowers[0].signalStrength}`}
                 >
@@ -241,7 +242,7 @@ const DeviceRow = ({ data, index, style }) => {
                   </IconButton>
                 </Tooltip>
               )}
-            {position.attributes.hasOwnProperty("batteryLevel") && (
+            {position.attributes?.batteryLevel && (
               <Tooltip
                 title={`${t("positionBatteryLevel")}: ${formatPercentage(
                   position.attributes.batteryLevel
@@ -310,19 +311,19 @@ const DeviceRow = ({ data, index, style }) => {
                 </IconButton>
               </Tooltip>
             )}
-            {position.attributes.hasOwnProperty("battery") && (
+            {position?.attributes?.battery && (
               <Tooltip
                 title={`${t(
                   "positionBatteryLevel"
-                )}: ${position.attributes.battery.toFixed(2)}V`}
+                )}: ${position?.attributes?.battery.toFixed(2)}V`}
               >
                 <IconButton size="small">
-                  {position.attributes.battery > 4.1 ? (
-                    position.attributes.charge ? (
+                  {position?.attributes?.battery > 4.1 ? (
+                    position?.attributes?.charge ? (
                       <BatteryChargingFullIcon
                         fontSize="small"
                         className={
-                          item.status === "online"
+                          item?.status === "online"
                             ? classes.success
                             : classes.neutral
                         }
@@ -331,18 +332,18 @@ const DeviceRow = ({ data, index, style }) => {
                       <BatteryFullIcon
                         fontSize="small"
                         className={
-                          item.status === "online"
+                          item?.status === "online"
                             ? classes.success
                             : classes.neutral
                         }
                       />
                     )
-                  ) : position.attributes.battery > 3.7 ? (
-                    position.attributes.charge ? (
+                  ) : position?.attributes?.battery > 3.7 ? (
+                    position?.attributes?.charge ? (
                       <BatteryCharging60Icon
                         fontSize="small"
                         className={
-                          item.status === "online"
+                          item?.status === "online"
                             ? classes.success
                             : classes.neutral
                         }
@@ -351,18 +352,18 @@ const DeviceRow = ({ data, index, style }) => {
                       <Battery60Icon
                         fontSize="small"
                         className={
-                          item.status === "online"
+                          item?.status === "online"
                             ? classes.success
                             : classes.neutral
                         }
                       />
                     )
-                  ) : position.attributes.battery > 3.4 ? (
-                    position.attributes.charge ? (
+                  ) : position?.attributes?.battery > 3.4 ? (
+                    position?.attributes?.charge ? (
                       <BatteryCharging30Icon
                         fontSize="small"
                         className={
-                          item.status === "online"
+                          item?.status === "online"
                             ? classes.warning
                             : classes.neutral
                         }
@@ -371,17 +372,17 @@ const DeviceRow = ({ data, index, style }) => {
                       <Battery30Icon
                         fontSize="small"
                         className={
-                          item.status === "online"
+                          item?.status === "online"
                             ? classes.warning
                             : classes.neutral
                         }
                       />
                     )
-                  ) : position.attributes.charge ? (
+                  ) : position?.attributes?.charge ? (
                     <BatteryCharging20Icon
                       fontSize="small"
                       className={
-                        item.status === "online"
+                        item?.status === "online"
                           ? classes.error
                           : classes.neutral
                       }
