@@ -7,17 +7,16 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig(() => ({
   server: {
     port: 3000,
-    host: true,
     proxy: {
       "/api/socket": {
-        target: "ws://localhost:8080",
-        changeOrigin: true,
-        secure: false,
+        target: "ws://45.32.83.203:80",
+        // changeOrigin: true,
+        // secure: false,
       },
       "/api": {
-        target: "http://45.32.83.203:8080",
-        changeOrigin: true,
-        secure: false,
+        target: "http://45.32.83.203:80",
+        // changeOrigin: true,
+        // secure: false,
       },
     },
   },

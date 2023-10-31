@@ -1,49 +1,52 @@
-import { useId, useCallback, useEffect } from 'react';
-import { useTheme } from '@mui/styles';
-import { map } from './core/MapView';
+import { useId, useCallback, useEffect } from "react";
+import { useTheme } from "@mui/styles";
+import { map } from "./core/MapView";
 
 const MapPositions = ({ positions, onClick }) => {
   const id = useId();
 
   const theme = useTheme();
 
-  const onMouseEnter = () => map.getCanvas().style.cursor = 'pointer';
-  const onMouseLeave = () => map.getCanvas().style.cursor = '';
+  const onMouseEnter = () => (map.getCanvas().style.cursor = "pointer");
+  const onMouseLeave = () => (map.getCanvas().style.cursor = "");
 
-  const onMarkerClick = useCallback((event) => {
-    event.preventDefault();
-    const feature = event.features[0];
-    if (onClick) {
-      onClick(feature.properties.id, feature.properties.index);
-    }
-  }, [onClick]);
+  const onMarkerClick = useCallback(
+    (event) => {
+      event.preventDefault();
+      const feature = event.features[0];
+      if (onClick) {
+        onClick(feature.properties.id, feature.properties.index);
+      }
+    },
+    [onClick]
+  );
 
   useEffect(() => {
     map.addSource(id, {
-      type: 'geojson',
+      type: "geojson",
       data: {
-        type: 'FeatureCollection',
+        type: "FeatureCollection",
         features: [],
       },
     });
     map.addLayer({
       id,
-      type: 'circle',
+      type: "circle",
       source: id,
       paint: {
-        'circle-radius': 5,
-        'circle-color': theme.palette.geometry.main,
+        "circle-radius": 5,
+        "circle-color": theme.palette.geometry.main,
       },
     });
 
-    map.on('mouseenter', id, onMouseEnter);
-    map.on('mouseleave', id, onMouseLeave);
-    map.on('click', id, onMarkerClick);
+    map.on("mouseenter", id, onMouseEnter);
+    map.on("mouseleave", id, onMouseLeave);
+    map.on("click", id, onMarkerClick);
 
     return () => {
-      map.off('mouseenter', id, onMouseEnter);
-      map.off('mouseleave', id, onMouseLeave);
-      map.off('click', id, onMarkerClick);
+      map.off("mouseenter", id, onMouseEnter);
+      map.off("mouseleave", id, onMouseLeave);
+      map.off("click", id, onMarkerClick);
 
       if (map.getLayer(id)) {
         map.removeLayer(id);
@@ -56,11 +59,11 @@ const MapPositions = ({ positions, onClick }) => {
 
   useEffect(() => {
     map.getSource(id)?.setData({
-      type: 'FeatureCollection',
+      type: "FeatureCollection",
       features: positions.map((position, index) => ({
-        type: 'Feature',
+        type: "Feature",
         geometry: {
-          type: 'Point',
+          type: "Point",
           coordinates: [position.longitude, position.latitude],
         },
         properties: {

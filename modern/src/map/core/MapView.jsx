@@ -1,23 +1,27 @@
-import 'maplibre-gl/dist/maplibre-gl.css';
-import maplibregl from 'maplibre-gl';
-import React, {
-  useRef, useLayoutEffect, useEffect, useState,
-} from 'react';
-import { SwitcherControl } from '../switcher/switcher';
-import { useAttributePreference, usePreference } from '../../common/util/preferences';
-import usePersistedState, { savePersistedState } from '../../common/util/usePersistedState';
-import { mapImages } from './preloadImages';
-import useMapStyles from './useMapStyles';
+import "maplibre-gl/dist/maplibre-gl.css";
+import maplibregl from "maplibre-gl";
+import React, { useRef, useLayoutEffect, useEffect, useState } from "react";
+import { SwitcherControl } from "../switcher/switcher";
+import {
+  useAttributePreference,
+  usePreference,
+} from "../../common/util/preferences";
+import usePersistedState, {
+  savePersistedState,
+} from "../../common/util/usePersistedState";
+import { mapImages } from "./preloadImages";
+import useMapStyles from "./useMapStyles";
 
-const element = document.createElement('div');
-element.style.width = '100%';
-element.style.height = '100%';
-element.style.boxSizing = 'initial';
+const element = document.createElement("div");
+element.style.width = "100%";
+element.style.height = "100%";
+element.style.boxSizing = "initial";
 
 export const map = new maplibregl.Map({
   container: element,
   attributionControl: false,
 });
+map.addControl(new maplibregl.FullscreenControl());
 
 let ready = false;
 const readyListeners = new Set();
@@ -38,7 +42,7 @@ const updateReadyValue = (value) => {
 
 const initMap = async () => {
   if (ready) return;
-  if (!map.hasImage('background')) {
+  if (!map.hasImage("background")) {
     Object.entries(mapImages).forEach(([key, value]) => {
       map.addImage(key, value, {
         pixelRatio: window.devicePixelRatio,
@@ -52,9 +56,9 @@ map.addControl(new maplibregl.NavigationControl());
 
 const switcher = new SwitcherControl(
   () => updateReadyValue(false),
-  (styleId) => savePersistedState('selectedMapStyle', styleId),
+  (styleId) => savePersistedState("selectedMapStyle", styleId),
   () => {
-    map.once('styledata', () => {
+    map.once("styledata", () => {
       const waiting = () => {
         if (!map.loaded()) {
           setTimeout(waiting, 33);
@@ -64,7 +68,7 @@ const switcher = new SwitcherControl(
       };
       waiting();
     });
-  },
+  }
 );
 
 map.addControl(switcher);
@@ -75,10 +79,16 @@ const MapView = ({ children }) => {
   const [mapReady, setMapReady] = useState(false);
 
   const mapStyles = useMapStyles();
-  const activeMapStyles = useAttributePreference('activeMapStyles', 'locationIqStreets,osm,carto');
-  const [defaultMapStyle] = usePersistedState('selectedMapStyle', usePreference('map', 'locationIqStreets'));
-  const mapboxAccessToken = useAttributePreference('mapboxAccessToken');
-  const maxZoom = useAttributePreference('web.maxZoom');
+  const activeMapStyles = useAttributePreference(
+    "activeMapStyles",
+    "locationIqStreets,osm,carto"
+  );
+  const [defaultMapStyle] = usePersistedState(
+    "selectedMapStyle",
+    usePreference("map", "locationIqStreets")
+  );
+  const mapboxAccessToken = useAttributePreference("mapboxAccessToken");
+  const maxZoom = useAttributePreference("web.maxZoom");
 
   useEffect(() => {
     if (maxZoom) {
@@ -91,8 +101,12 @@ const MapView = ({ children }) => {
   }, [mapboxAccessToken]);
 
   useEffect(() => {
-    const filteredStyles = mapStyles.filter((s) => s.available && activeMapStyles.includes(s.id));
-    const styles = filteredStyles.length ? filteredStyles : mapStyles.filter((s) => s.id === 'osm');
+    const filteredStyles = mapStyles.filter(
+      (s) => s.available && activeMapStyles.includes(s.id)
+    );
+    const styles = filteredStyles.length
+      ? filteredStyles
+      : mapStyles.filter((s) => s.id === "osm");
     switcher.updateStyles(styles, defaultMapStyle);
   }, [mapStyles, defaultMapStyle]);
 
@@ -114,7 +128,7 @@ const MapView = ({ children }) => {
   }, [containerEl]);
 
   return (
-    <div style={{ width: '100%', height: '100%' }} ref={containerEl}>
+    <div style={{ width: "100%", height: "100%" }} ref={containerEl}>
       {mapReady && children}
     </div>
   );
